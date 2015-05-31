@@ -87,6 +87,28 @@ void fill_rect(struct frame_buffer fb,
     }
 }
 
+void line_x(struct frame_buffer fb,
+            int start_x, int y, int end_x,
+            int thickness,
+            unsigned char r, unsigned char g, unsigned char b) {
+    for (int i = -thickness/2; i < thickness/2; i++) {
+        for (int x = start_x; x < end_x; x++) {
+            set_pixel(fb, x, y+i, r, g, b);
+        }
+    }
+}
+
+void line_y(struct frame_buffer fb,
+            int x, int start_y, int end_y,
+            int thickness,
+            unsigned char r, unsigned char g, unsigned char b) {
+    for (int i = -thickness/2; i < thickness/2; i++) {
+        for (int y = start_y; y < end_y; y++) {
+            set_pixel(fb, x+i, y, r, g, b);
+        }
+    }
+}
+
 
 void flush_frame_buffer(struct frame_buffer fb) {
     //flush(fb.file_descriptor);
