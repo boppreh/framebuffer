@@ -56,10 +56,12 @@ struct frame_buffer new_frame_buffer() {
                              MAP_SHARED,
                              fb.file_descriptor,
                              0);
+
     if ((int)fb.buffer == -1) {
         perror("Error: failed to map framebuffer device to memory");
-        exit(4);
+        exit(5);
     }
+
     return fb;
 }
 
