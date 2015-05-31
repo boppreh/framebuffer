@@ -69,21 +69,10 @@ void set_pixel(struct frame_buffer fb,
 
     long int location = (x + y * fb.width) * (fb.var_info.bits_per_pixel / 8);
 
-    if (fb.var_info.bits_per_pixel == 32) {
-        *(fb.buffer + location + 0) = b;
-        *(fb.buffer + location + 1) = g;
-        *(fb.buffer + location + 2) = r;
-        *(fb.buffer + location + 3) = 0;
-    } else if (fb.var_info.bits_per_pixel == 16) {
-        r >>= 3;
-        g >>= 2;
-        b >>= 3;
-        unsigned short pixel = r << 11 | g << 5  | b;
-        *((unsigned short*)(fb.buffer + location)) = pixel;
-    } else {
-        perror("Unexpected bits per pixel.");
-        exit(5);
-    }
+    *(fb.buffer + location + 0) = b;
+    *(fb.buffer + location + 1) = g;
+    *(fb.buffer + location + 2) = r;
+    *(fb.buffer + location + 3) = 0;
 }
 
 void flush_frame_buffer(struct frame_buffer fb) {
