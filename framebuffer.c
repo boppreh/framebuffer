@@ -77,6 +77,17 @@ void set_pixel(struct frame_buffer fb,
     *(fb.buffer + location + 3) = 0;
 }
 
+void fill_rect(struct frame_buffer fb,
+               int start_x, int start_y, int end_x, int end_y,
+               unsigned char r, unsigned char g, unsigned char b) {
+    for (int y = start_y; y < end_y; y++) {
+        for (int x = start_x; x < end_x; x++) {
+            set_pixel(fb, x, y, r, g, b);
+        }
+    }
+}
+
+
 void flush_frame_buffer(struct frame_buffer fb) {
     //flush(fb.file_descriptor);
 }
