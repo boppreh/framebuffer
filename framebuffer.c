@@ -109,6 +109,17 @@ void line_y(struct frame_buffer fb,
     }
 }
 
+void rect(struct frame_buffer fb,
+         int start_x, int start_y, int end_x, int end_y,
+         int thickness,
+         unsigned char r, unsigned char g, unsigned char b) {
+    line_x(fb, start_x, start_y, end_x, thickness, r, g, b);
+    line_x(fb, start_x, end_y, end_x, thickness, r, g, b);
+
+    line_y(fb, start_x, start_y, end_y, thickness, r, g, b);
+    line_y(fb, end_x, start_y, end_y, thickness, r, g, b);
+}
+         
 
 void flush_frame_buffer(struct frame_buffer fb) {
     //flush(fb.file_descriptor);
