@@ -50,17 +50,7 @@ struct frame_buffer new_frame_buffer() {
     fb.height = fb.var_info.yres;
 
     fb.buffer_size = fb.width * fb.height * fb.var_info.bits_per_pixel / 8;
-    fb.buffer = (char*) mmap(0,
-                             fb.buffer_size,
-                             PROT_READ | PROT_WRITE,
-                             MAP_SHARED,
-                             fb.file_descriptor,
-                             0);
-
-    if ((int)fb.buffer == -1) {
-        perror("Error: failed to map framebuffer device to memory");
-        exit(5);
-    }
+    fb.buffer = malloc(fb.buffer_size);
 
     return fb;
 }
@@ -122,10 +112,16 @@ void rect(struct frame_buffer fb,
          
 
 void flush_frame_buffer(struct frame_buffer fb) {
-    //flush(fb.file_descriptor);
+    lseek(fb.file_descriptor, 0, SEEK_SET);
+    if (write(fb.file_descriptor, fb.buffer, fb.buffer_size) <= 0) {
+        perror("Error flushing frame buffer.");
+        exit(5);
+    }
+    
+    fsync(fb.file_descriptor);
 }
 
 void destroy_frame_buffer(struct frame_buffer fb) {
-    munmap(fb.buffer, fb.buffer_size);
+    free(fb.buffer);
     close(fb.file_descriptor);
 }
